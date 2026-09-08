@@ -1,0 +1,140 @@
+/* Values are RGB channels rather than hex so Tailwind's opacity modifiers keep
+   working (`bg-ui-raised/60`). Every token is defined for both themes, so the
+   dark theme is `data-theme="dark"` on the root and nothing else. */
+
+:root {
+  /* Surface hierarchy. Adjacent planes deliberately use visibly different
+     values so cards, section headers, rows and the sidebar remain legible. */
+  --ui-canvas: 241 242 244;
+  --ui-sidebar: 249 249 250;
+  --ui-surface: 255 255 255;
+  --ui-raised: 234 235 237;
+  --ui-row: 255 255 255;
+  --ui-selected: 231 234 235;
+  --ui-border: 205 209 214;
+  --ui-separator: 220 222 225;
+  --ui-border-strong: 168 173 180;
+  --ui-accent: 95 133 142;
+  --ui-accent-contrast: 255 255 255;
+  --ui-text: 32 38 44;
+  --ui-text-soft: 95 105 116;
+  --ui-text-mute: 95 105 116;
+
+  /* State colours. Only ever a glyph or a badge dot, never text and never a
+     surface, so the 3:1 graphical-object threshold applies rather than 4.5:1. */
+  --state-idle: 138 146 158;
+  --state-running: 31 141 222;
+  --state-live: 124 58 237;
+  --state-pending: 194 118 26;
+  --state-done: 14 138 95;
+  --state-failed: 211 58 52;
+
+  /* Score bands, rendered as a tinted badge (`bg-score-N/10 text-score-N`).
+     Per-theme: a dark value on a dark surface disappears, and so does a light
+     one on white. */
+  --score-base: 55 65 81;
+  --score-1: 146 64 14;
+  --score-2: 6 95 70;
+  --score-3: 19 76 119;
+  --score-4: 107 33 168;
+  --score-failed: 153 27 27;
+
+  /* Medals are decorative identity, never a state — namespaced so they are not
+     harmonised into the semantic palette. */
+  --medal-gold: 176 138 20;
+  --medal-silver: 122 131 141;
+  --medal-bronze: 154 98 55;
+
+  /* Shadow is defined per theme rather than inherited: a soft cool one on
+     light, a deep black one on dark. */
+  --ui-shadow: 15 23 42;
+  --ui-shadow-alpha: 0.08;
+
+  /* Radios, checkboxes, scrollbars and date pickers are drawn by the user
+     agent; this is what tells it which way. */
+  color-scheme: light;
+}
+
+/* Two blocks apply the dark theme and both are needed: the media query serves
+   the "System" setting, which stores no attribute, and the attribute block
+   serves an explicit choice and wins over a light OS. Keep the bodies
+   identical. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ui-canvas: 7 9 11;
+    --ui-sidebar: 12 15 17;
+    --ui-surface: 18 21 24;
+    --ui-raised: 26 30 34;
+    --ui-row: 15 18 21;
+    --ui-selected: 30 35 39;
+    --ui-border: 43 49 55;
+    --ui-separator: 36 41 46;
+    --ui-border-strong: 67 75 84;
+    --ui-accent: 95 133 142;
+    --ui-accent-contrast: 255 255 255;
+    --ui-text: 239 240 242;
+    --ui-text-soft: 169 173 179;
+    --ui-text-mute: 143 149 156;
+
+    --state-idle: 123 131 142;
+    --state-running: 61 165 232;
+    --state-live: 167 139 250;
+    --state-pending: 224 163 60;
+    --state-done: 60 201 141;
+    --state-failed: 238 107 99;
+
+    --score-base: 154 163 175;
+    --score-1: 224 163 60;
+    --score-2: 60 201 141;
+    --score-3: 95 178 232;
+    --score-4: 185 140 236;
+    --score-failed: 238 107 99;
+    --medal-gold: 217 179 65;
+    --medal-silver: 174 182 191;
+    --medal-bronze: 197 138 92;
+
+    --ui-shadow: 6 11 14;
+    --ui-shadow-alpha: 0.22;
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ui-canvas: 7 9 11;
+  --ui-sidebar: 12 15 17;
+  --ui-surface: 18 21 24;
+  --ui-raised: 26 30 34;
+  --ui-row: 15 18 21;
+  --ui-selected: 30 35 39;
+  --ui-border: 43 49 55;
+  --ui-separator: 36 41 46;
+  --ui-border-strong: 67 75 84;
+  --ui-accent: 95 133 142;
+  --ui-accent-contrast: 255 255 255;
+  --ui-text: 239 240 242;
+  --ui-text-soft: 169 173 179;
+  --ui-text-mute: 143 149 156;
+
+  --state-idle: 123 131 142;
+  --state-running: 61 165 232;
+  --state-live: 167 139 250;
+  --state-pending: 224 163 60;
+  --state-done: 60 201 141;
+  --state-failed: 238 107 99;
+
+  --score-base: 154 163 175;
+  --score-1: 224 163 60;
+  --score-2: 60 201 141;
+  --score-3: 95 178 232;
+  --score-4: 185 140 236;
+  --score-failed: 238 107 99;
+  --medal-gold: 217 179 65;
+  --medal-silver: 174 182 191;
+  --medal-bronze: 197 138 92;
+
+  --ui-shadow: 6 11 14;
+  --ui-shadow-alpha: 0.22;
+
+  color-scheme: dark;
+}

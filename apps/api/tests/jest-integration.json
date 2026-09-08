@@ -1,0 +1,7 @@
+{
+  "moduleFileExtensions": ["js", "json"],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testTimeout": 15000,
+  "testRegex": ".integration-spec.js$"
+}

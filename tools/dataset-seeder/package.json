@@ -1,0 +1,21 @@
+{
+  "name": "@tournament-hub/dataset-seeder",
+  "version": "0.0.1",
+  "private": true,
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.json",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@tournament-hub/persistence": "0.0.1",
+    "@tournament-hub/scoring": "0.0.1",
+    "pg": "^8.13.3",
+    "typeorm": "^0.3.28"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.1",
+    "typescript": "^5.9.3"
+  }
+}

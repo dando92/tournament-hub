@@ -1,0 +1,17 @@
+{
+  "name": "@tournament-hub/startgg",
+  "version": "0.0.1",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.18"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

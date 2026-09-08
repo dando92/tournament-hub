@@ -1,0 +1,22 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testTimeout": 30000,
+  "maxWorkers": 1,
+  "testRegex": ".e2e-spec.ts$",
+  "globalSetup": "<rootDir>/global-setup.ts",
+  "setupFiles": ["<rootDir>/setup-env.ts"],
+  "transform": {
+    "^.+\\.ts$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@api/(.*)$": "<rootDir>/../src/$1",
+    "^@test/(.*)$": "<rootDir>/$1",
+    "^@auth/(.*)$": "<rootDir>/../src/auth/$1",
+    "^@bracket/(.*)$": "<rootDir>/../src/tournament/competition/bracket/$1",
+    "^@match/(.*)$": "<rootDir>/../src/tournament/competition/match/$1",
+    "^@tournament/(.*)$": "<rootDir>/../src/tournament/$1",
+    "^@account/(.*)$": "<rootDir>/../src/account/$1"
+  }
+}

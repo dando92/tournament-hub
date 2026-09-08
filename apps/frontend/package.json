@@ -1,0 +1,50 @@
+{
+  "name": "@tournament-hub/frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/copy-flags.mjs",
+    "prebuild": "node scripts/copy-flags.mjs",
+    "dev": "cross-env VITE_PUBLIC_API_URL=/api/ VITE_PUBLIC_REALTIME_URL=/realtime/ vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives",
+    "test": "node --experimental-strip-types --import ./tests/unit/alias-resolver.mjs --test tests/unit/cascading-path.test.ts tests/unit/pool-visibility.test.ts tests/unit/recent-tournaments.test.ts tests/unit/tree-selection.test.ts tests/unit/tree-status.test.ts tests/unit/stale-after-update.test.ts tests/unit/song-import-parser.test.ts tests/unit/song-import-scan.test.ts tests/unit/song-import-flow.test.ts tests/unit/song-title.test.ts tests/unit/roll-levels.test.ts tests/unit/song-dialog-preferences.test.ts tests/unit/schedule-timing.test.ts tests/unit/schedule-board.test.ts tests/unit/schedule-days.test.ts tests/unit/itgmania-profiles.test.ts tests/unit/advancement-rule-validation.test.ts tests/unit/match-status.test.ts tests/unit/match-points.test.ts tests/unit/accent-color.test.ts tests/unit/page-notices.test.ts tests/unit/grade.test.ts tests/unit/structure-canvas.test.ts tests/unit/structure-draft.test.ts tests/unit/plan-reasons.test.ts",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@headlessui/react": "^1.7.19",
+    "@tanstack/react-query": "^5.101.0",
+    "@tournament-hub/brackets": "0.0.1",
+    "@tournament-hub/contracts": "0.0.1",
+    "axios": "^1.14.0",
+    "flag-icons": "^7.5.0",
+    "jszip": "^3.10.1",
+    "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.30.3",
+    "react-select": "^5.8.0",
+    "react-toastify": "^10.0.5"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.66",
+    "@types/react-beautiful-dnd": "^13.1.8",
+    "@types/react-dom": "^18.2.22",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "autoprefixer": "^10.4.27",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.26",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.9.3",
+    "vite": "^5.4.21"
+  }
+}

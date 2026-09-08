@@ -1,0 +1,41 @@
+@font-face {
+  font-family: "dinpro";
+  src: url("/fonts/DINPRO-REGULAR.OTF") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "dinpro";
+  src: url("/fonts/DINPRO-BLACK.OTF") format("opentype");
+  font-weight: bolder;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "dinpro";
+  src: url("/fonts/DINPRO-BOLD.OTF") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "dinpro";
+  src: url("/fonts/DINPRO-LIGHT.OTF") format("opentype");
+  font-weight: lighter;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NeufreitEx";
+  src: url("/fonts/NEUFREIT-EXTRABOLD.OTF") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "rocket";
+  src: url("/fonts/ROCKET-WILDNESS.OTF") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}

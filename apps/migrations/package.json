@@ -1,0 +1,27 @@
+{
+  "name": "@tournament-hub/migrations",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test:e2e": "jest --config ./tests/jest-e2e.json --runInBand",
+    "migration:generate": "typeorm-ts-node-commonjs migration:generate -d src/migration-data-source.ts",
+    "migration:run": "typeorm-ts-node-commonjs migration:run -d src/migration-data-source.ts",
+    "migration:run:prod": "node dist/run-migrations"
+  },
+  "dependencies": {
+    "@tournament-hub/persistence": "0.0.1",
+    "bcrypt": "^6.0.0",
+    "pg": "^8.13.3",
+    "typeorm": "^0.3.28"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.4.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

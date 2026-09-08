@@ -1,0 +1,61 @@
+@import url("fonts.css");
+@import "./styles/tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Radios and checkboxes are excluded on purpose: painting their background
+   defeats the native control rather than theming it, and `color-scheme` on the
+   root already handles them. */
+@layer base {
+  :where(input:not([type="radio"]):not([type="checkbox"]), textarea) {
+    background-color: rgb(var(--ui-surface));
+    color: rgb(var(--ui-text));
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: rgb(var(--ui-text-mute));
+  }
+
+  /* Checkbox, radio and range are drawn by the user agent, in its own blue —
+     the colour `state-running` already means. */
+  :root {
+    accent-color: rgb(var(--ui-accent));
+  }
+
+  /* A tint rather than a fill, so selected words keep their own colour on
+     every surface. */
+  ::selection {
+    background-color: rgb(var(--ui-accent) / 0.35);
+  }
+}
+
+body {
+  font-family: "dinpro", sans-serif;
+  background-color: rgb(var(--ui-canvas));
+  color: rgb(var(--ui-text));
+}
+
+h1,
+h2,
+h3 {
+  font-family: "NeufreitEx", sans-serif;
+}
+
+.animate-first-place {
+  animation: first-place 0.5s infinite;
+}
+
+@keyframes first-place {
+  0% {
+    transform: scale(0.998);
+  }
+  50% {
+    transform: scale(1.01);
+  }
+  100% {
+    transform: scale(0.998);
+  }
+}

@@ -1,0 +1,148 @@
+name: tournament-hub
+
+services:
+  postgres:
+    image: postgres:16.4-alpine
+    restart: unless-stopped
+    # pg_stat_statements has to be preloaded at server start; the extension
+    # itself is created by scripts/postgres-init on a fresh volume and by the
+    # dataset seeder on an existing one.
+    command:
+      - postgres
+      - -c
+      - shared_preload_libraries=pg_stat_statements
+      - -c
+      - pg_stat_statements.track=all
+      - -c
+      - pg_stat_statements.max=5000
+    environment:
+      POSTGRES_USER: ${DATABASE_USER:-tournament_hub}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-tournament_hub}
+      POSTGRES_DB: ${DATABASE_NAME:-tournament_hub}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./scripts/postgres-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 5s
+
+  redis:
+    image: redis:7.4.0-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: migrations
+    restart: "no"
+    environment: &application-environment
+      NODE_ENV: production
+      INITIAL_ADMIN_USERNAME: ${INITIAL_ADMIN_USERNAME:-admin}
+      INITIAL_ADMIN_PASSWORD: ${INITIAL_ADMIN_PASSWORD:-local-development-password}
+      JWT_SECRET: ${JWT_SECRET:-local-development-secret}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost}
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: ${DATABASE_USER:-tournament_hub}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-tournament_hub}
+      DATABASE_NAME: ${DATABASE_NAME:-tournament_hub}
+      DATABASE_SSL: "false"
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      LIVE_EVENT_CHANNEL: ${LIVE_EVENT_CHANNEL:-tournament-hub.live}
+      STARTGG_API_URL: ${STARTGG_API_URL:-https://api.start.gg/gql/alpha}
+      STARTGG_PER_PAGE: ${STARTGG_PER_PAGE:-64}
+      STARTGG_MIN_INTERVAL_MS: ${STARTGG_MIN_INTERVAL_MS:-1000}
+      LOCAL_FIXTURE_ENABLED: ${LOCAL_FIXTURE_ENABLED:-true}
+      LOCAL_FIXTURE_TOURNAMENT_NAME: ${LOCAL_FIXTURE_TOURNAMENT_NAME:-Local E2E Tournament}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: api
+    restart: unless-stopped
+    ports:
+      - "${API_PORT:-3000}:3000"
+    environment:
+      <<: *application-environment
+      # One NDJSON line per request on stdout, with the number of queries it
+      # issued. Off unless a run is being measured.
+      REQUEST_TIMING_ENABLED: ${REQUEST_TIMING_ENABLED:-false}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:3000/health/ready"]
+      interval: 5s
+      timeout: 3s
+      retries: 18
+      start_period: 10s
+
+  realtime:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: realtime
+    restart: unless-stopped
+    ports:
+      - "${REALTIME_PORT:-3003}:3003"
+    environment: *application-environment
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:3003/health/ready"]
+      interval: 5s
+      timeout: 3s
+      retries: 18
+      start_period: 10s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend
+    restart: unless-stopped
+    environment:
+      PUBLIC_API_URL: ${PUBLIC_API_URL:-/api/}
+      PUBLIC_REALTIME_URL: ${PUBLIC_REALTIME_URL:-/realtime/}
+    ports:
+      - "${FRONTEND_PORT:-80}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1/"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+
+volumes:
+  postgres-data:
+  redis-data:

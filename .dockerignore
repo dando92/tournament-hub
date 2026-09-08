@@ -1,0 +1,12 @@
+.git
+.ai
+.env*
+**/node_modules
+**/dist
+**/coverage
+*.db
+*.sqlite
+*.sqlite3
+*.log
+**/.env*
+**/*.tsbuildinfo

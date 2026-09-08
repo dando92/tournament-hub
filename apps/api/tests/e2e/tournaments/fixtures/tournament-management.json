@@ -1,0 +1,14 @@
+{
+  "account": {
+    "username": "migration-owner",
+    "email": "migration-owner@example.test",
+    "password": "MigrationPassword!",
+    "playerName": "Migration Owner"
+  },
+  "createTournament": {
+    "name": "Migration Baseline Tournament"
+  },
+  "updateTournament": {
+    "name": "Migration Baseline Tournament Updated"
+  }
+}

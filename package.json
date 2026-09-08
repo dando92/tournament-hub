@@ -1,0 +1,50 @@
+{
+  "name": "tournament-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Self-contained tournament management: HTTP API, migrations, realtime fan-out and web application",
+  "workspaces": [
+    "packages/scoring",
+    "packages/brackets",
+    "packages/contracts",
+    "packages/persistence",
+    "packages/live-messaging",
+    "packages/startgg",
+    "apps/migrations",
+    "apps/api",
+    "apps/realtime",
+    "apps/frontend",
+    "tools/dataset-seeder"
+  ],
+  "scripts": {
+    "build": "node scripts/build-workspaces.mjs",
+    "dev": "concurrently --names api,realtime,frontend --prefix-colors blue,green,magenta \"npm run dev:api\" \"npm run dev:realtime\" \"npm run dev:frontend\"",
+    "dev:dependencies": "docker compose up --detach --wait postgres redis migrations",
+    "dev:api": "npm run start:dev --workspace=@tournament-hub/api",
+    "dev:realtime": "npm run start:dev --workspace=@tournament-hub/realtime",
+    "dev:frontend": "npm run dev --workspace=@tournament-hub/frontend",
+    "format": "prettier --write .",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test:unit",
+    "test:unit": "npm run test --workspaces --if-present",
+    "test:contract": "npm run test:contract --workspace=@tournament-hub/contracts",
+    "test:e2e": "npm run test:e2e --workspace=@tournament-hub/api -- --runInBand && npm run test:e2e --workspace=@tournament-hub/migrations",
+    "test:integration": "npm run test:integration --workspace=@tournament-hub/api",
+    "check:architecture": "node scripts/check-architecture.mjs",
+    "verify": "npm run check:architecture && npm run build && npm run lint && npm run test:contract && npm run test:unit && npm run test:e2e",
+    "verify:local": "npm run build && npm run test:integration && npm run test:e2e && node scripts/verify-local.mjs",
+    "up": "docker compose up --build --detach --wait --remove-orphans",
+    "down": "docker compose down --remove-orphans",
+    "reset": "docker compose down --volumes --remove-orphans && npm run up",
+    "logs": "docker compose logs --follow --tail=200",
+    "status": "docker compose ps && node scripts/local-status.mjs",
+    "seed:dataset": "npm run build --workspace=@tournament-hub/dataset-seeder && node tools/dataset-seeder/dist/main.js",
+    "bench:pgstat": "node scripts/pg-stat.mjs"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

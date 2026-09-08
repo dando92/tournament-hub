@@ -1,0 +1,20 @@
+{
+  "name": "@tournament-hub/persistence",
+  "version": "0.0.1",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@tournament-hub/scoring": "0.0.1",
+    "@nestjs/common": "^11.1.18",
+    "@nestjs/typeorm": "^11.0.1",
+    "typeorm": "^0.3.28"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
